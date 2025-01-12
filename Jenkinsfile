@@ -10,7 +10,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                url: 'https://github.com/GTA-Online-Project/server',
+                url: 'https://github.com/LetsGTA/server',
                 credentialsId: 'github'
             }
         }
