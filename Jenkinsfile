@@ -19,13 +19,15 @@ pipeline {
             steps {
                 withCredentials([
                 file(credentialsId: 'application-yml', variable: 'APP_YML'),
-                file(credentialsId: 'application-prod-yml', variable: 'APP_PROD_YML')
+                file(credentialsId: 'application-prod-yml', variable: 'APP_PROD_YML'),
+                file(credentialsId: 'application-test-yml', variable: 'APP_TEST_YML')
                 ]) {
                     sh '''
                     mkdir -p /var/jenkins_home/workspace/sonarqube_main/src/main/resources
                     chmod 755 /var/jenkins_home/workspace/sonarqube_main/src/main/resources
                     cp ${APP_YML} /var/jenkins_home/workspace/sonarqube_main/src/main/resources/application.yml
                     cp ${APP_PROD_YML} /var/jenkins_home/workspace/sonarqube_main/src/main/resources/application-prod.yml
+                    cp ${APP_TEST_YML} /var/jenkins_home/workspace/sonarqube_main/src/main/resources/application-prod.yml
                     '''
                 }
             }
