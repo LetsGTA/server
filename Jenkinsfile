@@ -27,7 +27,7 @@ pipeline {
                     chmod 755 /var/jenkins_home/workspace/sonarqube_main/src/main/resources
                     cp ${APP_YML} /var/jenkins_home/workspace/sonarqube_main/src/main/resources/application.yml
                     cp ${APP_PROD_YML} /var/jenkins_home/workspace/sonarqube_main/src/main/resources/application-prod.yml
-                    cp ${APP_TEST_YML} /var/jenkins_home/workspace/sonarqube_main/src/main/resources/application-prod.yml
+                    cp ${APP_TEST_YML} /var/jenkins_home/workspace/sonarqube_main/src/main/resources/application-test.yml
                     '''
                 }
             }
