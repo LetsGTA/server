@@ -23,6 +23,28 @@ pipeline {
                 file(credentialsId: 'application-test-yml', variable: 'APP_TEST_YML')
                 ]) {
                     sh '''
+                    echo "Checking credentials files..."
+                                echo "APP_YML: ${APP_YML}"
+                                echo "APP_PROD_YML: ${APP_PROD_YML}"
+                                echo "APP_TEST_YML: ${APP_TEST_YML}"
+
+                                if [ ! -f "${APP_YML}" ]; then
+                                  echo "APP_YML not found"
+                                  exit 1
+                                fi
+
+                                if [ ! -f "${APP_PROD_YML}" ]; then
+                                  echo "APP_PROD_YML not found"
+                                  exit 1
+                                fi
+
+                                if [ ! -f "${APP_TEST_YML}" ]; then
+                                  echo "APP_TEST_YML not found"
+                                  exit 1
+                                fi
+
+                                echo "Copying files..."
+
                     mkdir -p /var/jenkins_home/workspace/sonarqube_main/src/main/resources
                     chmod 755 /var/jenkins_home/workspace/sonarqube_main/src/main/resources
                     cp ${APP_YML} /var/jenkins_home/workspace/sonarqube_main/src/main/resources/application.yml
