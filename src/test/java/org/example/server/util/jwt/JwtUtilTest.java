@@ -8,7 +8,9 @@ import static org.mockito.BDDMockito.mock;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
+import org.springframework.test.context.ActiveProfiles;
 
+@ActiveProfiles("test")
 class JwtUtilTest {
 
     @Test
