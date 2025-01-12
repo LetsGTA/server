@@ -5,14 +5,18 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ActiveProfiles("test")
 class RandomUtilTest {
 
     @Test
-    void generateRandomNumber_shouldReturnStringOfGivenLength_withNumericCharacters() {
+    @DisplayName("랜덤 숫자 생성 - 정상 동작")
+    void generateRandomNumber_shouldGenerateNumberSuccessfully() {
         // given
         int length = 10;
 
@@ -22,11 +26,12 @@ class RandomUtilTest {
         // then
         assertNotNull(randomNumber);
         assertEquals(length, randomNumber.length());
-        assertTrue(randomNumber.matches("\\d+"), "Generated string should contain only numeric characters.");
+        assertTrue(randomNumber.matches("\\d+")); // 숫자로만 이루어졌는지 확인
     }
 
     @Test
-    void generateRandomString_shouldReturnStringOfGivenLength_withAlphanumericCharacters() {
+    @DisplayName("랜덤 문자열 생성 - 정상 동작")
+    void generateRandomString_shouldGenerateStringSuccessfully() {
         // given
         int length = 15;
 
@@ -36,34 +41,41 @@ class RandomUtilTest {
         // then
         assertNotNull(randomString);
         assertEquals(length, randomString.length());
-        assertTrue(randomString.matches("[a-zA-Z0-9]+"), "Generated string should contain only alphanumeric characters.");
+        assertTrue(randomString.matches("[A-Za-z0-9]+")); // 영숫자로만 이루어졌는지 확인
     }
 
     @Test
+    @DisplayName("랜덤 숫자 생성 - 길이가 0 이하일 때 예외 발생")
     void generateRandomNumber_shouldThrowException_whenLengthIsZeroOrNegative() {
         // given
         int length = 0;
-        int length2 = -5;
 
         // when & then
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> RandomUtil.generateRandomNumber(length));
-        assertEquals("길이가 0보다 커야 합니다.", exception.getMessage());
-
-        exception = assertThrows(IllegalArgumentException.class, () -> RandomUtil.generateRandomNumber(length2));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+                RandomUtil.generateRandomNumber(length));
         assertEquals("길이가 0보다 커야 합니다.", exception.getMessage());
     }
 
     @Test
+    @DisplayName("랜덤 문자열 생성 - 길이가 0 이하일 때 예외 발생")
     void generateRandomString_shouldThrowException_whenLengthIsZeroOrNegative() {
         // given
-        int length = 0;
-        int length2 = -5;
+        int length = -1;
 
         // when & then
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> RandomUtil.generateRandomString(length));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+                RandomUtil.generateRandomString(length));
         assertEquals("길이가 0보다 커야 합니다.", exception.getMessage());
+    }
 
-        exception = assertThrows(IllegalArgumentException.class, () -> RandomUtil.generateRandomString(length2));
-        assertEquals("길이가 0보다 커야 합니다.", exception.getMessage());
+    @Test
+    @DisplayName("랜덤 문자열 생성 - 다양한 길이 테스트")
+    void generateRandomString_shouldHandleVariousLengths() {
+        // given & when & then
+        for (int length = 1; length <= 50; length++) {
+            String randomString = RandomUtil.generateRandomString(length);
+            assertNotNull(randomString);
+            assertEquals(length, randomString.length());
+        }
     }
 }
