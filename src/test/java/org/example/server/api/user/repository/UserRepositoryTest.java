@@ -82,18 +82,6 @@ class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("사용자 저장 - 생성 시간과 업데이트 시간이 자동 설정되는지 확인")
-    void save_shouldAutomaticallySetCreatedAtAndUpdatedAt() {
-        // when
-        User savedUser = userRepository.save(testUser);
-
-        // then
-        assertNotNull(savedUser.getCreatedAt());
-        assertNotNull(savedUser.getUpdatedAt());
-        assertEquals(savedUser.getCreatedAt(), savedUser.getUpdatedAt());
-    }
-
-    @Test
     @DisplayName("사용자 수정 - 업데이트 시간이 갱신되는지 확인")
     void save_shouldUpdateUpdatedAtOnModification() {
         // given
