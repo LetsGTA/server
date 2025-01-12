@@ -70,4 +70,13 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	finalizedBy jacocoTestReport // 테스트가 끝난 후 커버리지 리포트 생성
+}
+
+jacocoTestReport {
+	dependsOn test // 테스트 실행 후 리포트 생성
+	reports {
+		xml.required = true // SonarQube가 사용하는 XML 리포트 활성화
+		html.required = true // 사람이 읽기 쉬운 HTML 리포트 활성화
+	}
 }
