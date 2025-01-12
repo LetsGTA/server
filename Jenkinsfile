@@ -23,13 +23,6 @@ pipeline {
                 file(credentialsId: 'application-test-yml', variable: 'APP_TEST_YML')
                 ]) {
                     sh '''
-
-                    if [ -f "${APP_TEST_YML}" ]; then
-                      echo "application-test.yml exists"
-                    else
-                      echo "application-test.yml does not exist"
-                    fi
-
                     mkdir -p /var/jenkins_home/workspace/sonarqube_main/src/main/resources
                     chmod 755 /var/jenkins_home/workspace/sonarqube_main/src/main/resources
                     cp ${APP_YML} /var/jenkins_home/workspace/sonarqube_main/src/main/resources/application.yml
