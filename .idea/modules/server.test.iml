@@ -28,6 +28,7 @@
     <orderEntry type="library" name="Gradle: com.fasterxml.uuid:java-uuid-generator:4.0.1" level="project" />
     <orderEntry type="library" name="Gradle: io.awspring.cloud:spring-cloud-starter-aws:2.4.4" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-ses:1.12.664" level="project" />
+    <orderEntry type="library" name="Gradle: com.h2database:h2:2.3.232" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-test:3.4.0" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.security:spring-security-test:6.4.1" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-jdbc:3.4.0" level="project" />

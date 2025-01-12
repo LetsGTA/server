@@ -20,7 +20,7 @@ public class RandomUtil {
 
     private static String generateRandomString(String characterSet, int length) {
         if (length <= 0) {
-            throw new IllegalArgumentException("Length must be greater than 0.");
+            throw new IllegalArgumentException("길이가 0보다 커야 합니다.");
         }
 
         StringBuilder sb = new StringBuilder(length);
