@@ -27,6 +27,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private static final String POST_BASE = "/api/v1/post/**";
+    private static final String USER_BASE = "/api/v1/user";
+
     private final UserGetService userGetService;
     private final CustomAuthenticationEntryPointHandler customAuthenticationEntryPointHandler;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
@@ -39,13 +42,24 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // http request 인증 설정
         http.authorizeHttpRequests(authorize -> authorize
+                // 공개 엔드포인트
                 .requestMatchers(
                         "/api/v1/login/**",
                         "/api/v1/signup/**",
                         "/error",
                         "/favicon.ico"
                 ).permitAll()
-                .requestMatchers(HttpMethod.DELETE, "/api/v1/user").hasRole(RoleName.ROLE_ADMIN.getRole())
+
+                // 게시글 관련 엔드포인트
+                .requestMatchers(HttpMethod.GET, POST_BASE).permitAll()
+                .requestMatchers(HttpMethod.POST, POST_BASE).authenticated()
+                .requestMatchers(HttpMethod.PUT, POST_BASE).authenticated()
+                .requestMatchers(HttpMethod.DELETE, POST_BASE).authenticated()
+
+                // 사용자 관리 엔드포인트
+                .requestMatchers(HttpMethod.DELETE, USER_BASE).hasRole(RoleName.ROLE_ADMIN.getRole())
+
+                // 기타 요청
                 .anyRequest().authenticated()
         );
 

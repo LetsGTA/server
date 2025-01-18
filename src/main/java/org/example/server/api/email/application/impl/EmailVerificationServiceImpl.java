@@ -37,7 +37,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
     @Override
     public EmailSignUpResponse sendEmailVerification(EmailSignUpRequest request) {
         // check duplicate
-        if(userGetService.isEmailExist(request.email())) {
+        if(userGetService.isUserExist(request.email())) {
             throw new UserException(UserExceptionResult.ALREADY_EXISTS);
         }
 

@@ -102,12 +102,12 @@ class UserGetServiceImplTest {
 
     @Test
     @DisplayName("이메일 존재 여부 확인 - 존재할 경우")
-    void isEmailExist_shouldReturnTrue_whenEmailExists() {
+    void isEmailExist_shouldReturnTrue_whenUserExists() {
         // given
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(testUser));
 
         // when
-        boolean result = userGetService.isEmailExist("test@example.com");
+        boolean result = userGetService.isUserExist("test@example.com");
 
         // then
         assertTrue(result);
@@ -116,12 +116,12 @@ class UserGetServiceImplTest {
 
     @Test
     @DisplayName("이메일 존재 여부 확인 - 존재하지 않을 경우")
-    void isEmailExist_shouldReturnFalse_whenEmailDoesNotExist() {
+    void isEmailExist_shouldReturnFalse_whenUserDoesNotExist() {
         // given
         when(userRepository.findByEmail("nonexistent@example.com")).thenReturn(Optional.empty());
 
         // when
-        boolean result = userGetService.isEmailExist("nonexistent@example.com");
+        boolean result = userGetService.isUserExist("nonexistent@example.com");
 
         // then
         assertFalse(result);
