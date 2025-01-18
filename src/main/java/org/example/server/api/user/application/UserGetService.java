@@ -6,5 +6,6 @@ public interface UserGetService {
 
     UserGetResponse getUserByUserId(long id);
     UserGetResponse getUserByEmail(String email);
-    boolean isEmailExist(String email);
+    boolean isUserExist(long id);
+    boolean isUserExist(String email);
 }

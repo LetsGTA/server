@@ -76,7 +76,7 @@ class EmailVerificationServiceImplTest {
         String generatedToken = "generatedToken123";
         String generatedVerificationNumber = "654321";
 
-        when(userGetService.isEmailExist(TEST_EMAIL)).thenReturn(false);
+        when(userGetService.isUserExist(TEST_EMAIL)).thenReturn(false);
         Mockito.mockStatic(RandomUtil.class);
         when(RandomUtil.generateRandomString(32)).thenReturn(generatedToken);
         when(RandomUtil.generateRandomNumber(6)).thenReturn(generatedVerificationNumber);
@@ -97,7 +97,7 @@ class EmailVerificationServiceImplTest {
         // given
         EmailSignUpRequest request = new EmailSignUpRequest(TEST_EMAIL);
 
-        when(userGetService.isEmailExist(TEST_EMAIL)).thenReturn(true);
+        when(userGetService.isUserExist(TEST_EMAIL)).thenReturn(true);
 
         // when & then
         UserException exception = assertThrows(UserException.class, () -> emailVerificationService.sendEmailVerification(request));
@@ -119,7 +119,7 @@ class EmailVerificationServiceImplTest {
         emailVerificationService.verifyEmail(request);
 
         // then
-        verify(emailVerificationRepository, times(1)).saveEmail(eq("SignUp"), argThat(arg -> arg.isDone()), anyLong());
+        verify(emailVerificationRepository, times(1)).saveEmail(eq("SignUp"), argThat(EmailVerificationRequest::isDone), anyLong());
     }
 
     @Test
