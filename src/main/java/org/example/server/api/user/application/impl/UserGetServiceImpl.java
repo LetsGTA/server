@@ -29,7 +29,12 @@ public class UserGetServiceImpl implements UserGetService {
     }
 
     @Override
-    public boolean isEmailExist(String email) {
+    public boolean isUserExist(long id) {
+        return userRepository.findByUserId(id).isPresent();
+    }
+
+    @Override
+    public boolean isUserExist(String email) {
         return userRepository.findByEmail(email).isPresent();
     }
 }

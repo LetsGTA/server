@@ -21,6 +21,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.server.api.oauth.entity.OAuthUser;
+import org.example.server.api.post.entity.Post;
 import org.example.server.api.user.enums.RoleName;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -59,6 +60,10 @@ public class User {
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OAuthUser> oAuthUsers = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {
