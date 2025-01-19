@@ -15,7 +15,7 @@ public record PostCreateRequest(
         @NotBlank(message = "게시글의 제목은 공백이 불가합니다.")
         String title,
 
-        @Size(max = 2000, message = "게시글의 내용은 최대 2000자까지 가능합니다.")
+        @Size(max = 65535, message = "게시글의 내용은 최대 65535자까지 가능합니다.")
         @NotBlank(message = "게시글의 내용은 공백이 불가합니다.")
         String content
 ) {

@@ -8,6 +8,7 @@ import org.example.server.api.post.exception.PostException;
 import org.example.server.api.post.exception.PostExceptionResult;
 import org.example.server.api.post.repository.PostRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -15,6 +16,7 @@ public class PostDelServiceImpl implements PostDelService {
 
     private final PostRepository postRepository;
 
+    @Transactional
     @Override
     public void deletePost(PostDeleteRequest request) {
         // 게시글 존재 여부 확인
