@@ -44,6 +44,7 @@ public class Category {
     @JoinColumn(name = "parent_id", nullable = false)
     private Category parent;
 
+    @Builder.Default
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> subCategories = new ArrayList<>();
 
