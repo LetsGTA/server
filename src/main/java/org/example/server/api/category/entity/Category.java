@@ -20,6 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.server.api.post.entity.Post;
 
 @Getter
 @Entity
@@ -47,6 +48,10 @@ public class Category {
     @Builder.Default
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> subCategories = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "category")
+    private List<Post> postList = new ArrayList<>();
 
     @PrePersist
     public void prePersist() {
