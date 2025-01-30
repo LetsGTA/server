@@ -8,6 +8,7 @@ import org.example.server.api.category.exception.CategoryException;
 import org.example.server.api.category.exception.CategoryExceptionResult;
 import org.example.server.api.category.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -15,6 +16,7 @@ public class CategoryCreateServiceImpl implements CategoryCreateService {
 
     private final CategoryRepository categoryRepository;
 
+    @Transactional
     @Override
     public void createCategory(CategoryCreateRequest request) {
         if(categoryRepository.existsByName(request.name())) {
