@@ -17,6 +17,7 @@ public class PostCreateServiceImpl implements PostCreateService {
     private final PostRepository postRepository;
     private final UserGetService userGetService;
 
+    // TODO : 카테고리 추가 로직 구현
     @Transactional
     @Override
     public void createPost(PostCreateRequest request) {

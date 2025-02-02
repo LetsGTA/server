@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.server.api.category.entity.Category;
 import org.example.server.api.user.entity.User;
 
 @Getter
@@ -35,6 +36,10 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
     @Column(nullable = false, length = 50)
     private String title;
@@ -75,5 +80,9 @@ public class Post {
 
     public void delete() {
         this.isDeleted = true;
+    }
+
+    public void assignCategory(Category category) {
+        this.category = category;
     }
 }
