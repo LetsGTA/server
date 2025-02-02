@@ -23,12 +23,21 @@ public class CategoryCreateServiceImpl implements CategoryCreateService {
             throw new CategoryException(CategoryExceptionResult.ALREADY_EXISTS);
         }
 
-        Category parentCategory = categoryRepository.findById(request.parentId())
-                .orElseThrow(() -> new CategoryException(CategoryExceptionResult.NOT_EXISTS));
+        Category category;
+        if (request.parentId() == 0) {
+            category = Category.builder()
+                    .name(request.name())
+                    .parent(null)
+                    .build();
+        } else {
+            Category parentCategory = categoryRepository.findById(request.parentId())
+                    .orElseThrow(() -> new CategoryException(CategoryExceptionResult.NOT_EXISTS));
+            category = Category.builder()
+                    .name(request.name())
+                    .parent(parentCategory)
+                    .build();
+        }
 
-        categoryRepository.save(Category.builder()
-                        .name(request.name())
-                        .parent(parentCategory)
-                .build());
+        categoryRepository.save(category);
     }
 }

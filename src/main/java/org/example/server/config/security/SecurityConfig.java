@@ -28,6 +28,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private static final String POST_BASE = "/api/v1/post/**";
+    private static final String CATEGORY_BASE = "/api/v1/category/**";
     private static final String USER_BASE = "/api/v1/user";
 
     private final UserGetService userGetService;
@@ -55,6 +56,11 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, POST_BASE).authenticated()
                 .requestMatchers(HttpMethod.PUT, POST_BASE).authenticated()
                 .requestMatchers(HttpMethod.DELETE, POST_BASE).authenticated()
+
+                // 카테고리 관련 엔드포인트
+                .requestMatchers(HttpMethod.GET, CATEGORY_BASE).permitAll()
+                .requestMatchers(HttpMethod.POST, CATEGORY_BASE).hasRole(RoleName.ROLE_ADMIN.getRole())
+                .requestMatchers(HttpMethod.DELETE, CATEGORY_BASE).hasRole(RoleName.ROLE_ADMIN.getRole())
 
                 // 사용자 관리 엔드포인트
                 .requestMatchers(HttpMethod.DELETE, USER_BASE).hasRole(RoleName.ROLE_ADMIN.getRole())
