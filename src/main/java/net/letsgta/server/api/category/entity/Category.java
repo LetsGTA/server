@@ -24,8 +24,8 @@ import net.letsgta.server.api.post.entity.Post;
 
 @Getter
 @Entity
-@Table(name = "categories")
 @Builder
+@Table(name = "categories")
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Category {
@@ -56,14 +56,5 @@ public class Category {
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
-    }
-
-    public void addSubCategory(Category subCategory) {
-        this.subCategories.add(subCategory);
-        subCategory.setParent(this);
-    }
-
-    private void setParent(Category parent) {
-        this.parent = parent;
     }
 }
