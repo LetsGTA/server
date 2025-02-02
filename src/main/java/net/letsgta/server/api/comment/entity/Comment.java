@@ -1,4 +1,4 @@
-package net.letsgta.server.api.post.entity;
+package net.letsgta.server.api.comment.entity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -21,31 +21,24 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import net.letsgta.server.api.category.entity.Category;
-import net.letsgta.server.api.comment.entity.Comment;
+import net.letsgta.server.api.post.entity.Post;
 import net.letsgta.server.api.user.entity.User;
 
-@Getter
-@Builder
 @Entity
-@Table(name = "posts")
+@Builder
+@Getter
+@Table(name = "comments")
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Post {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private long postId;
-
-    @Column(nullable = false, length = 50)
-    private String title;
+    private long commentId;
 
     @Column(nullable = false)
     private String content;
-
-    @Column(nullable = false)
-    private int views;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
@@ -64,11 +57,15 @@ public class Post {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
+    @JoinColumn(name = "post_id", nullable = false)
+    private Post post;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private Comment parent;
 
     @Builder.Default
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
     @PrePersist
@@ -82,17 +79,12 @@ public class Post {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void update(String title, String content) {
-        this.title = title;
+    public void updateContent(String content) {
         this.content = content;
     }
 
     public void delete() {
         this.isDeleted = true;
         this.deletedAt = LocalDateTime.now();
-    }
-
-    public void assignCategory(Category category) {
-        this.category = category;
     }
 }

@@ -20,6 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.letsgta.server.api.comment.entity.Comment;
 import net.letsgta.server.api.oauth.entity.OAuthUser;
 import net.letsgta.server.api.post.entity.Post;
 import net.letsgta.server.api.user.enums.RoleName;
@@ -59,11 +60,15 @@ public class User {
 
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OAuthUser> oAuthUsers = new ArrayList<>();
+    private List<OAuthUser> oAuthUserList = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Post> posts = new ArrayList<>();
+    private List<Post> postList = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> commentList = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {
