@@ -1,5 +1,6 @@
 package org.example.server.api.category.application.impl;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.server.api.category.application.CategoryGetService;
 import org.example.server.api.category.dto.response.CategoryGetResponse;
@@ -25,5 +26,12 @@ public class CategoryGetServiceImpl implements CategoryGetService {
                 .orElseThrow(() -> new CategoryException(CategoryExceptionResult.NOT_EXISTS));
 
         return CategoryGetResponse.from(category);
+    }
+
+    @Override
+    public List<CategoryGetResponse> getAllCategories() {
+        return categoryRepository.findAll().stream()
+                .map(CategoryGetResponse::from)
+                .toList();
     }
 }
