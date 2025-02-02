@@ -29,6 +29,7 @@ public class SecurityConfig {
 
     private static final String POST_BASE = "/api/v1/post/**";
     private static final String CATEGORY_BASE = "/api/v1/category/**";
+    private static final String COMMENT_BASE = "/api/v1/comment/**";
     private static final String USER_BASE = "/api/v1/user";
 
     private final UserGetService userGetService;
@@ -51,6 +52,9 @@ public class SecurityConfig {
                         "/favicon.ico"
                 ).permitAll()
 
+                // 사용자 관리 엔드포인트
+                .requestMatchers(HttpMethod.DELETE, USER_BASE).hasRole(RoleName.ROLE_ADMIN.getRole())
+
                 // 게시글 관련 엔드포인트
                 .requestMatchers(HttpMethod.GET, POST_BASE).permitAll()
                 .requestMatchers(HttpMethod.POST, POST_BASE).authenticated()
@@ -62,8 +66,11 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, CATEGORY_BASE).hasRole(RoleName.ROLE_ADMIN.getRole())
                 .requestMatchers(HttpMethod.DELETE, CATEGORY_BASE).hasRole(RoleName.ROLE_ADMIN.getRole())
 
-                // 사용자 관리 엔드포인트
-                .requestMatchers(HttpMethod.DELETE, USER_BASE).hasRole(RoleName.ROLE_ADMIN.getRole())
+                // 댓글 관련 엔드포인트
+                .requestMatchers(HttpMethod.GET, COMMENT_BASE).permitAll()
+                .requestMatchers(HttpMethod.POST, COMMENT_BASE).authenticated()
+                .requestMatchers(HttpMethod.PUT, COMMENT_BASE).authenticated()
+                .requestMatchers(HttpMethod.DELETE, COMMENT_BASE).authenticated()
 
                 // 기타 요청
                 .anyRequest().authenticated()

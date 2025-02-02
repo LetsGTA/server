@@ -3,7 +3,6 @@ package net.letsgta.server.api.category.dto.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.Builder;
 import net.letsgta.server.api.category.entity.Category;
 
@@ -27,7 +26,7 @@ public record CategoryGetResponse(
                 .subCategories(category.getSubCategories()
                         .stream()
                         .map(CategoryGetResponse::from)
-                        .collect(Collectors.toList()))
+                        .toList())
                 .build();
     }
 }

@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 import net.letsgta.server.api.category.application.CategoryGetService;
 import net.letsgta.server.api.category.dto.response.CategoryGetResponse;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +18,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -34,6 +34,19 @@ class CategoryReadControllerTest {
     @Autowired
     private CategoryGetService categoryGetService;
 
+    private static final int TEST_CATEGORY_ID = 1;
+    private static final String TEST_CATEGORY_NAME = "Test Category";
+    private static final LocalDateTime TEST_CREATED_AT = LocalDateTime.of(2023, 1, 1, 0, 0);
+
+    private CategoryGetResponse createDummyCategoryResponse() {
+        return CategoryGetResponse.builder()
+                .categoryId(TEST_CATEGORY_ID)
+                .name(TEST_CATEGORY_NAME)
+                .createdAt(TEST_CREATED_AT)
+                .subCategories(List.of())
+                .build();
+    }
+
     @TestConfiguration
     static class MockConfig {
         @Bean
@@ -44,27 +57,17 @@ class CategoryReadControllerTest {
 
     @Test
     @DisplayName("전체 카테고리 조회")
-    @WithAnonymousUser
     void testGetCategories() throws Exception {
         // given
-        int categoryId = 1;
-        LocalDateTime createdAt = LocalDateTime.of(2023, 1, 1, 0, 0);
-        CategoryGetResponse categoryGetResponse = CategoryGetResponse.builder()
-                .categoryId(categoryId)
-                .name("Test Category")
-                .createdAt(createdAt)
-                .subCategories(List.of())
-                .build();
-        List<CategoryGetResponse> responses = List.of(categoryGetResponse);
-
-        when(categoryGetService.getAllCategories()).thenReturn(responses);
+        CategoryGetResponse dummyResponse = createDummyCategoryResponse();
+        when(categoryGetService.getAllCategories()).thenReturn(List.of(dummyResponse));
 
         // when & then
         mockMvc.perform(get("/api/v1/category"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data").isArray())
-                .andExpect(jsonPath("$.data[0].categoryId").value(categoryId))
-                .andExpect(jsonPath("$.data[0].name").value("Test Category"))
+                .andExpect(jsonPath("$.data[0].categoryId").value(TEST_CATEGORY_ID))
+                .andExpect(jsonPath("$.data[0].name").value(TEST_CATEGORY_NAME))
                 .andExpect(jsonPath("$.data[0].createdAt").value("2023-01-01"))
                 .andExpect(jsonPath("$.data[0].subCategories").isArray())
                 .andExpect(jsonPath("$.data[0].subCategories").isEmpty());
@@ -72,25 +75,16 @@ class CategoryReadControllerTest {
 
     @Test
     @DisplayName("카테고리 단건 조회")
-    @WithAnonymousUser
     void testGetCategory() throws Exception {
         // given
-        int categoryId = 1;
-        LocalDateTime createdAt = LocalDateTime.of(2023, 1, 1, 0, 0);
-        CategoryGetResponse categoryGetResponse = CategoryGetResponse.builder()
-                .categoryId(categoryId)
-                .name("Test Category")
-                .createdAt(createdAt)
-                .subCategories(List.of())
-                .build();
-
-        when(categoryGetService.getCategory(categoryId)).thenReturn(categoryGetResponse);
+        CategoryGetResponse dummyResponse = createDummyCategoryResponse();
+        when(categoryGetService.getCategory(TEST_CATEGORY_ID)).thenReturn(dummyResponse);
 
         // when & then
-        mockMvc.perform(get("/api/v1/category/{categoryId}", categoryId))
+        mockMvc.perform(get("/api/v1/category/{categoryId}", TEST_CATEGORY_ID))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.categoryId").value(categoryId))
-                .andExpect(jsonPath("$.data.name").value("Test Category"))
+                .andExpect(jsonPath("$.data.categoryId").value(TEST_CATEGORY_ID))
+                .andExpect(jsonPath("$.data.name").value(TEST_CATEGORY_NAME))
                 .andExpect(jsonPath("$.data.createdAt").value("2023-01-01"))
                 .andExpect(jsonPath("$.data.subCategories").isArray())
                 .andExpect(jsonPath("$.data.subCategories").isEmpty());
